@@ -1,0 +1,33 @@
+version: "3.7"
+services:
+  # Mongo
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - "27017:27017"
+    networks:
+      servers_net:
+        aliases:
+            - "mongo"
+  # Cassandra
+  cassandra:
+    image: cassandra:latest
+    container_name: cassandra
+    ports:
+      - "9042"
+    networks:
+      servers_net:
+        aliases:
+            - "cassandra"
+
+
+networks:
+  servers_net:
+    name: servers_net
+    driver: bridge
+
+

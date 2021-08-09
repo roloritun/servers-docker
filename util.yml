@@ -8,11 +8,11 @@ services:
     ports:
     - "9393:80"
     networks:
-      kafkanet:
+      servers_net:
         aliases: 
           - "adminer"
 
 networks:
-  kafkanet:
-    name: kafkanet
+  servers_net:
+    name: servers_net
     driver: bridge
