@@ -1,0 +1,18 @@
+version: "3.7"
+services:
+#Adminer
+  adminer:
+    restart: always
+    image: dockette/adminer
+    container_name: adminer
+    ports:
+    - "9393:80"
+    networks:
+      kafkanet:
+        aliases: 
+          - "adminer"
+
+networks:
+  kafkanet:
+    name: kafkanet
+    driver: bridge
