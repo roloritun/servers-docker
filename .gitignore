@@ -2,3 +2,4 @@ bin*.*
 *.pem
 *.sdi
 .secrets
+old_yaml/*.*
