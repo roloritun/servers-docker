@@ -1,0 +1,29 @@
+version: "3.7"
+services:
+#Databases
+
+  mysql:
+    #env_file: .env
+    image: mysql:latest
+    container_name: mysql
+    ports:
+      - "3306"
+    volumes:
+      - ./mysql/db:/var/lib/mysql
+      - ./mysql/conf:/etc/mysql/conf.d
+      - ./mysql/init.d:/docker-entrypoint-initdb.d
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sample
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: 12345678   
+    networks:
+      servers_net:
+        aliases:
+            - "mysql"
+  
+networks:
+  servers_net:
+    name: servers_net
+    driver: bridge

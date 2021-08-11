@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    expose:
+      - "3000"
+    ports:
+        - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=password
+    volumes:
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    depends_on:
+      - "prometheus"
+    networks:
+      servers_net:
+        aliases:
+            - "grafana"
+
+
+
+networks:
+  servers_net:
+    name: servers_net
+    driver: bridge
+
+
+

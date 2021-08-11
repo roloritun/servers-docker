@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+#Databases
+  sql.data:
+   image: mssql-linux
+   container_name: mssql-linux
+   build:
+     context: ./mssql
+     dockerfile: Dockerfile
+   ports:
+      - "1433:1433"    
+   environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+   networks:
+      servers_net:
+        aliases:
+            - "mssql-linux"
+ 
+networks:
+  servers_net:
+    name: servers_net
+    driver: bridge

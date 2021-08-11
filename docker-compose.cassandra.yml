@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+
+  # Cassandra
+  cassandra:
+    image: cassandra:latest
+    container_name: cassandra
+    ports:
+      - "9042"
+    networks:
+      servers_net:
+        aliases:
+            - "cassandra"
+
+
+networks:
+  servers_net:
+    name: servers_net
+    driver: bridge
+
+

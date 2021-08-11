@@ -1,0 +1,107 @@
+version: "3.7"
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    expose:
+      - "2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000      
+    volumes:
+      - kafka_zookeeper:/opt/zookeeper-3.4.13/data
+    networks:
+      servers_net:
+        aliases:
+            - "zookeeper"
+
+  kafka1:
+    image: wurstmeister/kafka:latest
+    container_name: kafka1
+    command: [start-kafka.sh]
+    expose:
+      - "8080"
+      - "9092"
+      - "9999"
+    ports:
+        - "8181:8080"
+        - "9191:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9092
+      KAFKA_BROKER_ID: 500
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+      KAFKA_OPTS: -javaagent:/prometheus/jmx_prometheus_javaagent-0.3.1.jar=8080:/prometheus/kafka-0-8-2.yml 
+      JMX_PORT: 9999
+    volumes:
+      - ./kafka/prometheus:/prometheus
+      - kafka_kafka1:/opt/kafka_2.12-2.2.0/logs
+    networks:
+      servers_net:
+        aliases:
+            - "kafka1"
+    depends_on:
+      - "zookeeper"
+
+  kafka2:
+    image: wurstmeister/kafka:latest
+    container_name: kafka2
+    command: [start-kafka.sh]
+    expose:
+      - "8080"
+      - "9092"
+      - "9999"
+    ports:
+        - "8282:8080"
+        - "9292:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka2:9092
+      KAFKA_BROKER_ID: 501
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+      KAFKA_OPTS: -javaagent:/prometheus/jmx_prometheus_javaagent-0.3.1.jar=8080:/prometheus/kafka-0-8-2.yml 
+      JMX_PORT: 9999
+    volumes:
+      - ./kafka/prometheus:/prometheus
+      - kafka_kafka2:/opt/kafka_2.12-2.2.0/logs
+    depends_on:
+      - "zookeeper"
+    networks:
+      servers_net:
+        aliases:
+            - "kafka2"
+
+  kafka_manager:
+    image: sheepkiller/kafka-manager:latest
+    container_name: kafka_manager
+    expose:
+      - "9000"
+    ports:
+        - "9000:9000"
+    environment:
+      ZK_HOSTS: "zookeeper:2181"
+      APPLICATION_SECRET: "random-secret"
+    command: -Dpidfile.path=/dev/null
+    depends_on:
+      - "zookeeper"
+      - "kafka1"
+      - "kafka2"
+    networks:
+      servers_net:
+        aliases:
+            - "kafka_manager"
+
+networks:
+  servers_net:
+    name: servers_net
+    driver: bridge
+
+volumes:
+  kafka_zookeeper:
+  kafka_kafka1:
+  kafka_kafka2:
+
