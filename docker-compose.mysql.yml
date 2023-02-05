@@ -4,7 +4,8 @@ services:
 
   mysql:
     #env_file: .env
-    image: mysql:latest
+    platform: linux/x86_64
+    image: mysql/mysql-server:8.0.23
     container_name: mysql
     ports:
       - "3306"

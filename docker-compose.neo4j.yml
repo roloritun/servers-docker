@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  neo4j: 
+    image: neo4j:latest
+    container_name: neo4j
+    ports: 
+      - 7474:7474
+      - 7687:7687
+    restart: unless-stopped
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    volumes: 
+      - ./neo4j/db/data:/data
+      - ./neo4j/db/conf:/conf
+      - ./neo4j/db/logs:/logs
+      - ./neo4j/db/plugins:/plugins
+    networks:
+      servers_net:
+        aliases:
+            - "neo4j"
+  neo5j:
+    image: neo4j:latest
+    container_name: neo5j
+    ports: 
+      - 7888:7474
+      - 7999:7687
+    restart: unless-stopped
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    volumes: 
+      - ./neo4j/neo5/data:/data
+      - ./neo4j/neo5/conf:/conf
+      - ./neo4j/neo5/logs:/logs
+      - ./neo4j/neo5/plugins:/plugins
+    networks:
+      servers_net:
+        aliases:
+            - "neo5j"
+
+networks:
+  servers_net:
+    name: servers_net
+    driver: bridge

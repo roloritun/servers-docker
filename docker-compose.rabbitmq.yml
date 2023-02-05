@@ -2,18 +2,18 @@ version: "3.7"
 services:
   # RabbitMQ
   rmq:
-    image: rabbitmq:latest
+    image: rabbitmq:management-alpine
     container_name: rabbitmq
     ports:
-      - "4369:4369"
-      - "5671:5671"
       - "5672:5672"
-      - "15671:15671"
       - "15672:15672"
     environment:
-      RABBITMQ_ERLANG_COOKIE: abcabcabcabc
-      RABBITMQ_DEFAULT_USER: hiromaily
-      RABBITMQ_DEFAULT_PASS: hiropass
+      AMQP_URL: 'amqp://rabbitmq?connection_attempts=5&retry_delay=5'
+      #RABBITMQ_ERLANG_COOKIE: abcabcabcabc
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    restart: always
+
     networks:
       servers_net:
         aliases:

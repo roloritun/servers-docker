@@ -1,0 +1,1 @@
+docker-compose  -f docker-compose.postgres.yml  -f docker-compose.rabbitmq.yml  -f redis.yml up
