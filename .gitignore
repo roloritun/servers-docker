@@ -20,4 +20,4 @@ neostore*
 *.idb
 system
 *.ini
-*checkpoint*
+checkpoint.*
