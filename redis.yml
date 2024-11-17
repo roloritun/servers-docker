@@ -31,3 +31,24 @@ networks:
     driver: bridge
 
 
+
+
+
+
+
+version: '3.8'
+services:
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command:
+      - sh
+      - -c
+      - 'exec redis-server --requirepass "$$REDIS_PASSWORD"'
+    volumes: 
+      - cache:/data
+volumes:
+  cache:
+    driver: local

@@ -10,7 +10,7 @@ services:
    ports:
       - "1433:1433"    
    environment:
-      - SA_PASSWORD=Pass@word
+      - SA_PASSWORD=Pa55word
       - ACCEPT_EULA=Y
    networks:
       servers_net:
