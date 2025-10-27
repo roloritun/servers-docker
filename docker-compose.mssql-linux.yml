@@ -12,10 +12,16 @@ services:
    environment:
       - SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y
+   volumes:
+      - mssql_data:/var/opt/mssql
    networks:
       servers_net:
         aliases:
             - "mssql-linux"
+
+volumes:
+  mssql_data:
+    driver: local
  
 networks:
   servers_net:

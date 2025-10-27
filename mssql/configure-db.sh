@@ -6,7 +6,7 @@ i=0
 
 while [[ $STATUS -ne 0 ]] && [[ $i -lt 30 ]]; do
 	i=$i+1
-	/opt/mssql-tools/bin/sqlcmd -t 1 -U sa -P $SA_PASSWORD -Q "select 1" >> /dev/null
+	/opt/mssql-tools18/bin/sqlcmd -S localhost -t 1 -U sa -P $SA_PASSWORD -C -Q "select 1" >> /dev/null
 	STATUS=$?
 done
 
@@ -15,8 +15,8 @@ if [ $STATUS -ne 0 ]; then
 	exit 1
 fi
 
-echo "======= MSSQL SERVER STARTED ========" | tee -a ./config.log
+echo "======= MSSQL SERVER STARTED ========" | tee -a /opt/config/config.log
 # Run the setup script to create the DB and the schema in the DB
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -i setup.sql
+/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -C -d master -i /opt/config/setup.sql
 
-echo "======= MSSQL CONFIG COMPLETE =======" | tee -a ./config.log
+echo "======= MSSQL CONFIG COMPLETE =======" | tee -a /opt/config/config.log
